@@ -37,7 +37,9 @@ public class Subscription implements BaseEntity<Integer> {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscription")
     private List<Order> orders;
 
-    private LocalDate duration;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id")
+    private Period period;
 
     private LocalDate startTime;
     private LocalDate endTime;

@@ -17,26 +17,35 @@ CREATE TABLE IF NOT EXISTS item
 );
 
 --changeset artem:3
-CREATE TABLE IF NOT EXISTS price
+CREATE TABLE IF NOT EXISTS period
 (
-    id      SERIAL PRIMARY KEY,
-    item_id INT REFERENCES item,
-    amount  INT,
-    period  DATE
+    id           SERIAL PRIMARY KEY,
+    years_count  INT,
+    months_count INT,
+    days_count   INT
 );
 
 --changeset artem:4
+CREATE TABLE IF NOT EXISTS price
+(
+    id        SERIAL PRIMARY KEY,
+    item_id   INT REFERENCES item,
+    amount    INT,
+    period_id INT REFERENCES period
+);
+
+--changeset artem:5
 CREATE TABLE IF NOT EXISTS subscription
 (
     id         SERIAL PRIMARY KEY,
     user_id    INT REFERENCES users,
     item_id    INT REFERENCES item,
-    duration   DATE,
+    period_id  INT REFERENCES period,
     start_time DATE,
     end_time   DATE
 );
 
---changeset artem:5
+--changeset artem:6
 CREATE TABLE IF NOT EXISTS orders
 (
     id              SERIAL PRIMARY KEY,

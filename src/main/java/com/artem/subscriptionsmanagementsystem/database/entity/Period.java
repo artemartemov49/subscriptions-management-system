@@ -1,12 +1,10 @@
 package com.artem.subscriptionsmanagementsystem.database.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,19 +15,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Price implements BaseEntity<Integer> {
+public class Period implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    Integer amount;
+    @Column(name = "years_count")
+    Integer years;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    private Item item;
+    @Column(name = "months_count")
+    Integer months;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id")
-    private Period period;
+    @Column(name = "days_count")
+    Integer days;
 }
