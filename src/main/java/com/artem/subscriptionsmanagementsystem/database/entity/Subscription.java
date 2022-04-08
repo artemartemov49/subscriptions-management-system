@@ -13,9 +13,13 @@ import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString(exclude = "orders")
+@EqualsAndHashCode(of = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
