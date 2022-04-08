@@ -3,6 +3,8 @@ package com.artem.subscriptionsmanagementsystem.database.entity;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,12 +40,11 @@ public class Subscription implements BaseEntity<Integer> {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscription")
     private List<Order> orders;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id")
-    private Period period;
 
     private LocalDate startTime;
     private LocalDate endTime;

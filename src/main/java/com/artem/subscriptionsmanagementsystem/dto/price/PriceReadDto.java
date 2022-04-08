@@ -1,6 +1,6 @@
 package com.artem.subscriptionsmanagementsystem.dto.price;
 
-import com.artem.subscriptionsmanagementsystem.dto.period.PeriodReadDto;
+import com.artem.subscriptionsmanagementsystem.dto.periods.PeriodsReadDto;
 import lombok.Value;
 
 @Value
@@ -10,5 +10,5 @@ public class PriceReadDto {
 
     Integer amount;
 
-    PeriodReadDto period;
+    PeriodsReadDto period;
 }

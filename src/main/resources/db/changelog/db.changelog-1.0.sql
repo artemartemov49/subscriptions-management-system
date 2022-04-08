@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS item
 );
 
 --changeset artem:3
-CREATE TABLE IF NOT EXISTS period
+CREATE TABLE IF NOT EXISTS periods
 (
     id           SERIAL PRIMARY KEY,
     years_count  INT,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS subscription
     id         SERIAL PRIMARY KEY,
     user_id    INT REFERENCES users,
     item_id    INT REFERENCES item,
-    period_id  INT REFERENCES period,
+    status     VARCHAR (32),
     start_time DATE,
     end_time   DATE
 );

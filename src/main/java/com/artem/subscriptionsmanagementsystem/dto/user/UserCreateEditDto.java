@@ -1,5 +1,7 @@
 package com.artem.subscriptionsmanagementsystem.dto.user;
 
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateEditDto;
+import java.util.List;
 import lombok.Value;
 
 @Value
@@ -11,4 +13,5 @@ public class UserCreateEditDto {
 
     String phone;
 
+    List<SubscriptionCreateEditDto> subscriptions;
 }
