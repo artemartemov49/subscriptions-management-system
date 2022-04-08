@@ -1,8 +1,10 @@
-package com.artem.subscriptionsmanagementsystem.mapper;
+package com.artem.subscriptionsmanagementsystem.mapper.user;
 
 import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
 import com.artem.subscriptionsmanagementsystem.database.entity.User;
 import com.artem.subscriptionsmanagementsystem.dto.user.UserCreateEditDto;
+import com.artem.subscriptionsmanagementsystem.mapper.Mapper;
+import com.artem.subscriptionsmanagementsystem.mapper.subscription.SubscriptionCreateEditMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
