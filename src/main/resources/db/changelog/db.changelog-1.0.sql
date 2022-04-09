@@ -17,12 +17,10 @@ CREATE TABLE IF NOT EXISTS item
 );
 
 --changeset artem:3
-CREATE TABLE IF NOT EXISTS periods
+CREATE TABLE IF NOT EXISTS duration
 (
     id           SERIAL PRIMARY KEY,
-    years_count  INT,
-    months_count INT,
-    days_count   INT
+    months_count INT
 );
 
 --changeset artem:4
@@ -31,7 +29,7 @@ CREATE TABLE IF NOT EXISTS price
     id        SERIAL PRIMARY KEY,
     item_id   INT REFERENCES item,
     amount    INT,
-    period_id INT REFERENCES period
+    period_id INT REFERENCES duration
 );
 
 --changeset artem:5

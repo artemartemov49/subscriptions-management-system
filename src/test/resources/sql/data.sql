@@ -8,7 +8,7 @@ VALUES (1, 'swimming'),
        (2, 'gym'),
        (3, 'jogging');
 
-INSERT INTO period(id, years_count, months_count, days_count)
+INSERT INTO duration(id, years_count, months_count, days_count)
 VALUES (1, 0, 1, 0),
        (2, 0, 3, 0),
        (3, 0, 6, 0),

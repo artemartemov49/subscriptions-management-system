@@ -15,18 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Periods implements BaseEntity<Integer> {
+public class Duration implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "years_count")
-    Integer years;
-
     @Column(name = "months_count")
     Integer months;
 
-    @Column(name = "days_count")
-    Integer days;
 }
