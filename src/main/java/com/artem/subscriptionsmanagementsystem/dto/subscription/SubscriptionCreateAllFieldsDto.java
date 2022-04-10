@@ -2,9 +2,11 @@ package com.artem.subscriptionsmanagementsystem.dto.subscription;
 
 import com.artem.subscriptionsmanagementsystem.database.entity.Status;
 import java.time.LocalDate;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Value
+@Data
+@AllArgsConstructor
 public class SubscriptionCreateAllFieldsDto {
 
     SubscriptionCreateEditDto subscriptionCreateEditDto;
@@ -12,4 +14,8 @@ public class SubscriptionCreateAllFieldsDto {
     LocalDate startTime;
     LocalDate endTime;
 
+    public SubscriptionCreateAllFieldsDto(
+        SubscriptionCreateEditDto subscriptionCreateEditDto) {
+        this.subscriptionCreateEditDto = subscriptionCreateEditDto;
+    }
 }

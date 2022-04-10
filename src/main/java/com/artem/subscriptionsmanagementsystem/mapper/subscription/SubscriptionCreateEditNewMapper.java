@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateAllFieldsDto, Subscription> {
+public class SubscriptionCreateEditNewMapper implements Mapper<SubscriptionCreateAllFieldsDto, Subscription> {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -31,6 +31,12 @@ public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateAllFie
         return subscription;
     }
 
+    @Override
+    public Subscription map(SubscriptionCreateAllFieldsDto fromObject, Subscription toObject) {
+        copy(fromObject, toObject);
+        return toObject;
+    }
+
     private void copy(SubscriptionCreateAllFieldsDto object, Subscription subscription) {
         var item = getItem(object);
         var user = getUser(object);
@@ -38,6 +44,7 @@ public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateAllFie
 
         subscription.setItem(item);
         subscription.setUser(user);
+
         subscription.setOrders(orders);
         subscription.setStatus(object.getStatus());
         subscription.setStartTime(object.getStartTime());

@@ -7,5 +7,5 @@ public class PriceCreateEditDto {
 
     Integer itemId;
     Integer amount;
-    Integer periodId;
+    Integer durationId;
 }
