@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubscriptionCreateEditMapper implements Mapper<SubscriptionCreateEditDto, Subscription> {
+public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateEditDto, Subscription> {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -32,31 +32,21 @@ public class SubscriptionCreateEditMapper implements Mapper<SubscriptionCreateEd
         var subscription = new Subscription();
         copy(object, subscription);
 
-        var orders = createOrders(object);
-        var months = orderService.getMonths(orders);
-
-        subscription.setOrders(orders);
-        subscription.setStatus(ACTIVE);
-        subscription.setStartTime(LocalDate.now());
-        subscription.setEndTime(LocalDate.now().plusMonths(months));
-
         return subscription;
-    }
-
-    @Override
-    public Subscription map(SubscriptionCreateEditDto fromObject, Subscription toObject) {
-        var subscription = new Subscription();
-        copy(fromObject, toObject);
-
-        return null;
     }
 
     private void copy(SubscriptionCreateEditDto object, Subscription subscription) {
         var item = getItem(object);
         var user = getUser(object);
+        var orders = createOrders(object);
+        var months = orderService.getMonths(orders);
 
         subscription.setItem(item);
         subscription.setUser(user);
+        subscription.setOrders(orders);
+        subscription.setStatus(ACTIVE);
+        subscription.setStartTime(LocalDate.now());
+        subscription.setEndTime(LocalDate.now().plusMonths(months));
     }
 
     private User getUser(SubscriptionCreateEditDto object) {

@@ -5,9 +5,10 @@ import java.util.List;
 import lombok.Value;
 
 @Value
-public class SubscriptionCreateEditDto {
+public class SubscriptionAddOrdersDto {
 
-    Integer userId;
-    Integer itemId;
+    Integer id;
+
     List<OrderCreateDto> orders;
+
 }
