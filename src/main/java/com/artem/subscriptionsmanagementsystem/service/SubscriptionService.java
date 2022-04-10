@@ -41,12 +41,15 @@ public class SubscriptionService {
     }
 
     @Transactional
-    public SubscriptionReadDto update(Integer id, SubscriptionCreateEditDto subscriptionDto) {
-        return subscriptionRepository.findById(id)
+    public SubscriptionReadDto createOrderToExistingSubscription(Integer id, SubscriptionCreateEditDto subscriptionDto) {
+        var subscriptionReadDto = subscriptionRepository.findById(id)
             .map(entity -> subscriptionCreateEditMapper.map(subscriptionDto, entity))
             .map(subscriptionRepository::saveAndFlush)
             .map(subscriptionReadMapper::map)
             .orElseThrow();
+        createOrder(subscriptionDto, subscriptionReadDto);
+
+        return subscriptionReadDto;
     }
 
     private void createOrder(SubscriptionCreateEditDto subscriptionDto, SubscriptionReadDto subscriptionReadDto) {
