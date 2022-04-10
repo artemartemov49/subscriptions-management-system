@@ -7,6 +7,6 @@ public class DurationReadDto {
 
     Integer id;
 
-    Integer month;
+    Integer months;
 
 }

@@ -1,7 +1,5 @@
 package com.artem.subscriptionsmanagementsystem.mapper.subscription;
 
-import static com.artem.subscriptionsmanagementsystem.database.entity.Status.ACTIVE;
-
 import com.artem.subscriptionsmanagementsystem.database.entity.Item;
 import com.artem.subscriptionsmanagementsystem.database.entity.Order;
 import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
@@ -9,18 +7,16 @@ import com.artem.subscriptionsmanagementsystem.database.entity.User;
 import com.artem.subscriptionsmanagementsystem.database.repository.ItemRepository;
 import com.artem.subscriptionsmanagementsystem.database.repository.OrderRepository;
 import com.artem.subscriptionsmanagementsystem.database.repository.UserRepository;
-import com.artem.subscriptionsmanagementsystem.dto.order.OrderReadDto;
-import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateEditDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateAllFieldsDto;
 import com.artem.subscriptionsmanagementsystem.mapper.Mapper;
 import com.artem.subscriptionsmanagementsystem.service.OrderService;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateEditDto, Subscription> {
+public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateAllFieldsDto, Subscription> {
 
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
@@ -28,43 +24,40 @@ public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateEditDt
     private final OrderService orderService;
 
     @Override
-    public Subscription map(SubscriptionCreateEditDto object) {
+    public Subscription map(SubscriptionCreateAllFieldsDto object) {
         var subscription = new Subscription();
         copy(object, subscription);
 
         return subscription;
     }
 
-    private void copy(SubscriptionCreateEditDto object, Subscription subscription) {
+    private void copy(SubscriptionCreateAllFieldsDto object, Subscription subscription) {
         var item = getItem(object);
         var user = getUser(object);
-        var orders = createOrders(object);
-        var months = orderService.getMonths(orders);
+        var orders = createOrder(object);
 
         subscription.setItem(item);
         subscription.setUser(user);
         subscription.setOrders(orders);
-        subscription.setStatus(ACTIVE);
-        subscription.setStartTime(LocalDate.now());
-        subscription.setEndTime(LocalDate.now().plusMonths(months));
+        subscription.setStatus(object.getStatus());
+        subscription.setStartTime(object.getStartTime());
+        subscription.setEndTime(object.getEndTime());
     }
 
-    private User getUser(SubscriptionCreateEditDto object) {
-        return userRepository.findById(object.getUserId())
+    private User getUser(SubscriptionCreateAllFieldsDto object) {
+        return userRepository.findById(object.getSubscriptionCreateEditDto().getUserId())
             .orElseThrow();
     }
 
-    private Item getItem(SubscriptionCreateEditDto object) {
-        return itemRepository.findById(object.getItemId())
+    private Item getItem(SubscriptionCreateAllFieldsDto object) {
+        return itemRepository.findById(object.getSubscriptionCreateEditDto().getItemId())
             .orElseThrow();
     }
 
-    private List<Order> createOrders(SubscriptionCreateEditDto object) {
-        var orderIds = object.getOrders().stream()
-            .map(orderService::create)
-            .map(OrderReadDto::getId)
+    private List<Order> createOrder(SubscriptionCreateAllFieldsDto object) {
+        var orderReadDto = orderService.create(object.getSubscriptionCreateEditDto().getOrder());
+
+        return orderRepository.findById(orderReadDto.getId()).stream()
             .toList();
-
-        return orderRepository.findAllById(orderIds);
     }
 }

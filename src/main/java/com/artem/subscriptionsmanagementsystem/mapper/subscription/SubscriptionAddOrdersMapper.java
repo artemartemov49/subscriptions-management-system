@@ -1,27 +1,41 @@
 package com.artem.subscriptionsmanagementsystem.mapper.subscription;
 
+import com.artem.subscriptionsmanagementsystem.database.entity.Order;
 import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
-import com.artem.subscriptionsmanagementsystem.database.repository.SubscriptionRepository;
-import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionAddOrdersDto;
+import com.artem.subscriptionsmanagementsystem.database.repository.OrderRepository;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionAddOrderDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionAddOrdersAllFieldsDto;
 import com.artem.subscriptionsmanagementsystem.mapper.Mapper;
+import com.artem.subscriptionsmanagementsystem.service.OrderService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubscriptionAddOrdersMapper implements Mapper<SubscriptionAddOrdersDto, Subscription> {
+public class SubscriptionAddOrdersMapper implements Mapper<SubscriptionAddOrdersAllFieldsDto, Subscription> {
 
-    private final SubscriptionRepository subscriptionRepository;
+    private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
     @Override
-    public Subscription map(SubscriptionAddOrdersDto object) {
-        var subscription = getSubscription(object);
+    public Subscription map(SubscriptionAddOrdersAllFieldsDto object) {
+        Subscription subscription = new Subscription();
 
-        return null;
+        var orders = createOrders(object.getSubscriptionAddOrderDto());
+
+        subscription.setId(object.getSubscriptionAddOrderDto().getId());
+        subscription.setOrders(orders);
+        subscription.setStatus(object.getStatus());
+        subscription.setStartTime(object.getStartTime());
+        subscription.setEndTime(object.getEndTime());
+
+        return subscription;
     }
 
-    private Subscription getSubscription(SubscriptionAddOrdersDto object) {
-        return subscriptionRepository.findById(object.getId())
-            .orElseThrow();
+    private List<Order> createOrders(SubscriptionAddOrderDto object) {
+        orderService.create(object.getOrder());
+
+        return orderRepository.findAllBySubscriptionId(object.getId());
     }
 }

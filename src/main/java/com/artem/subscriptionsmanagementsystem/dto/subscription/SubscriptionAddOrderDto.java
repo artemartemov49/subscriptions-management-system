@@ -1,14 +1,13 @@
 package com.artem.subscriptionsmanagementsystem.dto.subscription;
 
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
-import java.util.List;
 import lombok.Value;
 
 @Value
-public class SubscriptionAddOrdersDto {
+public class SubscriptionAddOrderDto {
 
     Integer id;
 
-    List<OrderCreateDto> orders;
+    OrderCreateDto order;
 
 }
