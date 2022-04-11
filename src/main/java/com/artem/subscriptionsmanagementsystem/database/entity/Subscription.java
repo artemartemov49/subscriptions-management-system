@@ -1,6 +1,7 @@
 package com.artem.subscriptionsmanagementsystem.database.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,7 +45,7 @@ public class Subscription implements BaseEntity<Integer> {
     private Status status;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscription")
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
     private LocalDate startTime;
     private LocalDate endTime;

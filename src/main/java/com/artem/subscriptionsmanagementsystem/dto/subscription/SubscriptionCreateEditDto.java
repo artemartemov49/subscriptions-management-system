@@ -7,5 +7,4 @@ public class SubscriptionCreateEditDto {
 
     Integer userId;
     Integer itemId;
-    Integer priceId;
 }

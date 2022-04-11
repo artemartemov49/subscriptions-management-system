@@ -26,19 +26,19 @@ CREATE TABLE IF NOT EXISTS duration
 --changeset artem:4
 CREATE TABLE IF NOT EXISTS price
 (
-    id        SERIAL PRIMARY KEY,
-    item_id   INT REFERENCES item,
-    amount    INT,
-    period_id INT REFERENCES duration
+    id          SERIAL PRIMARY KEY,
+    item_id     INT REFERENCES item,
+    amount      INT,
+    duration_id INT REFERENCES duration
 );
 
 --changeset artem:5
 CREATE TABLE IF NOT EXISTS subscription
 (
     id         SERIAL PRIMARY KEY,
-    user_id    INT REFERENCES users,
+    user_id    INT REFERENCES users ON DELETE CASCADE,
     item_id    INT REFERENCES item,
-    status     VARCHAR (32),
+    status     VARCHAR(32),
     start_time DATE,
     end_time   DATE
 );
@@ -47,6 +47,6 @@ CREATE TABLE IF NOT EXISTS subscription
 CREATE TABLE IF NOT EXISTS orders
 (
     id              SERIAL PRIMARY KEY,
-    subscription_id INT REFERENCES subscription,
+    subscription_id INT REFERENCES subscription ON DELETE CASCADE,
     price_id        INT REFERENCES price
 );

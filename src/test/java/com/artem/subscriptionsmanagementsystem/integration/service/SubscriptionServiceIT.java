@@ -1,9 +1,15 @@
 package com.artem.subscriptionsmanagementsystem.integration.service;
 
-import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
+import static com.artem.subscriptionsmanagementsystem.database.entity.Status.DISABLED;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
+import com.artem.subscriptionsmanagementsystem.database.entity.User;
+import com.artem.subscriptionsmanagementsystem.database.repository.UserRepository;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateEditDto;
 import com.artem.subscriptionsmanagementsystem.integration.IntegrationTestBase;
 import com.artem.subscriptionsmanagementsystem.service.SubscriptionService;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 
@@ -11,16 +17,28 @@ import org.junit.jupiter.api.Test;
 public class SubscriptionServiceIT extends IntegrationTestBase {
 
     private final SubscriptionService subscriptionService;
+    private final UserRepository userRepository;
 
     @Test
     void create() {
-        var orderCreateDto = new OrderCreateDto(null, 1);
+        var subscriptionDto = new SubscriptionCreateEditDto(1, 1);
+        var actualResult = subscriptionService.create(subscriptionDto);
 
-        var userDto = new SubscriptionCreateEditDto(
-            1,
-            1,
-            orderCreateDto
-        );
-        var actualResult = subscriptionService.create(userDto);
+        var subscriptions = userRepository.findById(subscriptionDto.getUserId())
+            .map(User::getSubscriptions)
+            .orElseThrow();
+
+        var userId = subscriptions.stream()
+            .filter(it -> it.getId().equals(actualResult.getId()))
+            .map(Subscription::getUser)
+            .map(User::getId)
+            .findFirst()
+            .orElseThrow();
+
+        assertEquals(subscriptionDto.getItemId(), actualResult.getItem().getId());
+        assertEquals(subscriptionDto.getUserId(), userId);
+        assertEquals(LocalDate.now().minusMonths(2), actualResult.getStartTime());
+        assertEquals(LocalDate.now().minusMonths(1), actualResult.getEndTime());
+        assertEquals(DISABLED, actualResult.getStatus());
     }
 }

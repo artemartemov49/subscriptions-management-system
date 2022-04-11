@@ -30,6 +30,6 @@ public class Price implements BaseEntity<Integer> {
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id")
+    @JoinColumn(name = "duration_id")
     private Duration duration;
 }

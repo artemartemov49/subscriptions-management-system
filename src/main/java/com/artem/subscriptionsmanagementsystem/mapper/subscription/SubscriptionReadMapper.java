@@ -19,13 +19,17 @@ public class SubscriptionReadMapper implements Mapper<Subscription, Subscription
 
     @Override
     public SubscriptionReadDto map(Subscription object) {
+        var item = itemReadMapper.map(object.getItem());
         List<OrderReadDto> orders = object.getOrders().stream()
             .map(orderReadMapper::map)
             .toList();
 
         return new SubscriptionReadDto(
             object.getId(),
-            itemReadMapper.map(object.getItem()),
+            item,
+            object.getStartTime(),
+            object.getEndTime(),
+            object.getStatus(),
             orders
         );
     }

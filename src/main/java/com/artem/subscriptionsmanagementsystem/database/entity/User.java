@@ -1,5 +1,6 @@
 package com.artem.subscriptionsmanagementsystem.database.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,5 +37,5 @@ public class User implements BaseEntity<Integer> {
     String phone;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    List<Subscription> subscriptions;
+    List<Subscription> subscriptions = new ArrayList<>();
 }
