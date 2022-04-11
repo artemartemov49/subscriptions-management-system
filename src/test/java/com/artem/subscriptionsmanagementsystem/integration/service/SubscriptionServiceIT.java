@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
 import com.artem.subscriptionsmanagementsystem.database.entity.User;
 import com.artem.subscriptionsmanagementsystem.database.repository.UserRepository;
-import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateEditDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.integration.IntegrationTestBase;
 import com.artem.subscriptionsmanagementsystem.service.SubscriptionService;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ public class SubscriptionServiceIT extends IntegrationTestBase {
 
     @Test
     void create() {
-        var subscriptionDto = new SubscriptionCreateEditDto(1, 1);
+        var subscriptionDto = new SubscriptionCreateDto(1, 1);
         var actualResult = subscriptionService.create(subscriptionDto);
 
         var subscriptions = userRepository.findById(subscriptionDto.getUserId())

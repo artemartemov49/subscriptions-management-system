@@ -6,7 +6,7 @@ import com.artem.subscriptionsmanagementsystem.database.entity.Order;
 import com.artem.subscriptionsmanagementsystem.database.entity.Status;
 import com.artem.subscriptionsmanagementsystem.database.repository.OrderRepository;
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
-import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateEditDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.integration.IntegrationTestBase;
 import com.artem.subscriptionsmanagementsystem.service.OrderService;
 import com.artem.subscriptionsmanagementsystem.service.SubscriptionService;
@@ -46,7 +46,7 @@ public class OrderServiceIT extends IntegrationTestBase {
 
     @Test
     void createToNewSubscription() {
-        var subscriptionDto = new SubscriptionCreateEditDto(USER_ID, PRICE_ID);
+        var subscriptionDto = new SubscriptionCreateDto(USER_ID, PRICE_ID);
         var subscriptionReadDto = subscriptionService.create(subscriptionDto);
 
         var orderCreateDto = new OrderCreateDto(subscriptionReadDto.getId(), PRICE_ID);
