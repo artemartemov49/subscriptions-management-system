@@ -49,15 +49,4 @@ public class OrderService {
             })
             .orElse(false);
     }
-
-    @Transactional
-    public boolean deleteWithSubscription(Integer id, Integer subscriptionId) {
-        return orderRepository.findById(id)
-            .map(entity -> {
-                orderRepository.delete(entity);
-                orderRepository.flush();
-                return true;
-            })
-            .orElse(false);
-    }
 }
