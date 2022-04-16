@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Durations</title>
+</head>
+<body>
+<div>
+  <div th:each="price : ${prices}">
+    <a th:href="@{'/durations/' + ${price.id}}" th:text="|Sport name: ${price.item.name}, Amount: ${price.amount}, Count month: ${price.duration.months}|"></a>
+  </div>
+</div>
+</body>
+</html>

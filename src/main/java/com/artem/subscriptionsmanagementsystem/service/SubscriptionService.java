@@ -34,6 +34,7 @@ public class SubscriptionService {
             .map(subscriptionReadMapper::map);
     }
 
+    @Transactional
     public SubscriptionReadDto create(SubscriptionCreateDto subscriptionDto) {
         return Optional.of(subscriptionDto)
             .map(subscriptionCreateMapper::map)

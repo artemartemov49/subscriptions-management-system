@@ -31,6 +31,7 @@ public class PriceService {
             .map(priceReadMapper::map);
     }
 
+    @Transactional
     public PriceReadDto create(PriceCreateEditDto priceDto) {
         return Optional.of(priceDto)
             .map(priceCreateEditMapper::map)

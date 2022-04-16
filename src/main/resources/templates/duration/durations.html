@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Durations</title>
+</head>
+<body>
+<div>
+  <div th:each="duration : ${durations}">
+    <a th:href="@{'/durations/' + ${duration.id}}" th:text="|Count month: ${duration.months}|"></a>
+  </div>
+</div>
+</body>
+</html>

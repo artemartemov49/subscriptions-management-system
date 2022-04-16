@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Duration</title>
+</head>
+<body>
+<div>
+  <label for="months">Count month:
+    <span id="months" th:text="${duration.months}"></span>
+  </label>
+</div>
+<button type="button">
+  <a th:href="@{/durations/{durationId}/update(durationId=${duration.id})}">Update duration</a>
+</button>
+<form th:action="@{/durations/{durationId}/delete(durationId=${duration.id})}" method="post">
+  <button type="submit">Remove</button>
+</form>
+
+
+</body>
+</html>

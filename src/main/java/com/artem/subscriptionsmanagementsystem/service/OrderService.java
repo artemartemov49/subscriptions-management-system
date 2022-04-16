@@ -2,7 +2,9 @@ package com.artem.subscriptionsmanagementsystem.service;
 
 import com.artem.subscriptionsmanagementsystem.database.repository.OrderRepository;
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
+import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateWithSubscriptionDto;
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderReadDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.mapper.order.OrderCreateMapper;
 import com.artem.subscriptionsmanagementsystem.mapper.order.OrderReadMapper;
 import java.util.List;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class OrderService {
 
+    private final SubscriptionService subscriptionService;
     private final OrderRepository orderRepository;
     private final OrderReadMapper orderReadMapper;
     private final OrderCreateMapper orderCreateMapper;
@@ -37,6 +40,14 @@ public class OrderService {
             .map(orderRepository::saveAndFlush)
             .map(orderReadMapper::map)
             .orElseThrow();
+    }
+
+    public OrderReadDto createWithNewSubscription(OrderCreateWithSubscriptionDto orderDto) {
+        SubscriptionCreateDto subscriptionDto = new SubscriptionCreateDto(orderDto.getUserId(), orderDto.getItemId());
+        var subscriptionReadDto = subscriptionService.create(subscriptionDto);
+
+        var orderCreateDto = new OrderCreateDto(subscriptionReadDto.getId(), orderDto.getPriceId());
+        return create(orderCreateDto);
     }
 
     @Transactional

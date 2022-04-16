@@ -31,6 +31,7 @@ public class UserService {
             .map(userReadMapper::map);
     }
 
+    @Transactional
     public UserReadDto create(UserCreateEditDto userDto) {
         return Optional.of(userDto)
             .map(userCreateEditMapper::map)

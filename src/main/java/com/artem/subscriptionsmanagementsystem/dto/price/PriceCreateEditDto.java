@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class PriceCreateEditDto {
 
-    Integer itemId;
     Integer amount;
+    Integer itemId;
     Integer durationId;
 }

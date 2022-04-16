@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit item</title>
+</head>
+<body>
+<form th:action="@{/items/{itemId}/update(itemId=${item.id})}" method="post" th:object="${item}">
+  <div>
+    <label for="name">Name:
+      <input id="name" type="text" name="name" th:value="*{name}">
+    </label>
+  </div>
+  <button type="submit">Update</button>
+</form>
+<form th:action="@{/items/{itemId}/delete(itemId=${item.id})}" method="post">
+  <button type="submit">Remove</button>
+</form>
+</body>
+</html>

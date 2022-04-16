@@ -31,6 +31,7 @@ public class DurationService {
             .map(durationReadMapper::map);
     }
 
+    @Transactional
     public DurationReadDto create(DurationCreateEditDto durationDto) {
         return Optional.of(durationDto)
             .map(durationCreateEditMapper::map)
