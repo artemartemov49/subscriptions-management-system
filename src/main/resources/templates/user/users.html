@@ -1,14 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Users</title>
 </head>
 <body>
-<div>
-  <div th:each="user : ${users}">
-    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.getName()}, ${user.getEmail()}|"></a>
-  </div>
+<div layout:fragment="content">
+  <h4>Users</h4>
+    <table class="table table-hover table-light table-sm">
+      <caption>List of users</caption>
+      <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Details</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${users}">
+        <th scope="row" th:text="${user.id}"></th>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td>  <a class="btn btn-outline-primary p-lg" th:href="@{'/users/' + ${user.id}}">Details</a></td>
+      </tr>
+      </tbody>
+    </table>
 </div>
 </body>
 </html>

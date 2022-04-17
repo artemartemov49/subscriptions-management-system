@@ -1,22 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Duration</title>
 </head>
 <body>
-<div>
-  <label for="months">Count month:
-    <span id="months" th:text="${duration.months}"></span>
-  </label>
+<div layout:fragment="content">
+  <h4>Duration</h4>
+  <div class="row mb-5">
+    <label for="months" class="col-sm-2 col-form-label">Count month:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control form-control-sm" id="months"
+             th:placeholder="${duration.months}"
+             disabled>
+    </div>
+  </div>
+  <div class="btn-group mt-2">
+      <a class="btn btn-primary p-lg"
+         th:href="@{/durations/{durationId}/update(durationId=${duration.id})}"
+         role="button">Update duration</a>
+      <form th:action="@{/durations/{durationId}/delete(durationId=${duration.id})}" method="post">
+        <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
+      </form>
+  </div>
 </div>
-<button type="button">
-  <a th:href="@{/durations/{durationId}/update(durationId=${duration.id})}">Update duration</a>
-</button>
-<form th:action="@{/durations/{durationId}/delete(durationId=${duration.id})}" method="post">
-  <button type="submit">Remove</button>
-</form>
-
-
 </body>
 </html>

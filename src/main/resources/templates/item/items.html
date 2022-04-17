@@ -1,14 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Items</title>
+  <title>Activitis</title>
 </head>
 <body>
-<div>
-  <div th:each="item : ${items}">
-    <a th:href="@{'/items/' + ${item.id}}" th:text="|${item.name}|"></a>
-  </div>
+
+<div layout:fragment="content">
+  <h4>Activitis</h4>
+  <table class="table table-hover table-light table-sm">
+    <caption>List of activities</caption>
+    <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+      <th scope="row" th:text="${item.id}"></th>
+      <td th:text="${item.name}"></td>
+      <td>  <a class="btn btn-outline-primary p-lg" th:href="@{'/items/' + ${item.id}}">Details</a></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 </body>
 </html>

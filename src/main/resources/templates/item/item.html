@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Item</title>
+  <title>Activity</title>
 </head>
 <body>
-<div>
-  <label for="name">Name:
-    <span id="name" th:text="${item.name}"></span>
-  </label>
+<div layout:fragment="content">
+  <h4>Activity</h4>
+  <div class="row mb-5">
+    <label for="name" class="col-sm-2 col-form-label">Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control form-control-sm" id="name"
+             th:placeholder="${item.name}"
+             disabled>
+    </div>
+  </div>
+  <div class="btn-group mt-2">
+    <a class="btn btn-primary p-lg" th:href="@{/items/{itemId}/update(itemId=${item.id})}" role="button">Update activity</a>
+    <form th:action="@{/items/{itemId}/delete(itemId=${item.id})}" method="post">
+      <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
+    </form>
+  </div>
 </div>
-<button type="button">
-  <a th:href="@{/items/{itemId}/update(itemId=${item.id})}">Update item</a>
-</button>
-<form th:action="@{/items/{itemId}/delete(itemId=${item.id})}" method="post">
-  <button type="submit">Remove</button>
-</form>
-
-
 </body>
 </html>

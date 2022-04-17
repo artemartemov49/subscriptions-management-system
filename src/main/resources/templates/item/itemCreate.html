@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Create Item</title>
+  <title>Create Activity</title>
 </head>
 <body>
-<form th:action="@{/items/create}" method="post" th:object="${item}">
-  <label for="name">Name:
-    <input id="name" type="text" name="name" th:value="*{name}">
-  </label>
-  <button type="submit">Create</button>
-</form>
+<div layout:fragment="content">
+  <form th:action="@{/items/create}" method="post" th:object="${item}">
+    <h4>Create Activity</h4>
+    <div class="row mb-5">
+      <label for="name" class="col-sm-2 col-form-label">Name:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control form-control-sm" id="name"
+               th:field="*{name}">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Create</button>
+  </form>
+</div>
 </body>
 </html>

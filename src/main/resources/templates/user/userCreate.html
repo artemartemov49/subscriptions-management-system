@@ -1,40 +1,37 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Edit user</title>
+  <title>Create User</title>
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/users/{userId}/update(userId=${user.id})}" method="post">
+  <form th:action="@{/users/create}" method="post">
     <h4>Create User</h4>
     <div class="row mb-5">
       <label for="name" class="col-sm-2 col-form-label">Name:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control form-control-sm" id="name"
-               th:field="${user.name}">
+               th:text="${user.name}">
       </div>
 
       <label for="email" class="col-sm-2 col-form-label">Email:</label>
       <div class="col-sm-10">
         <input type="email" class="form-control form-control-sm" id="email"
-               th:field="${user.email}">
+               th:text="${user.email}">
       </div>
 
       <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control form-control-sm" id="phone"
-               th:field="${user.phone}">
+               th:text="${user.phone}">
       </div>
     </div>
-    <button class="btn btn-primary mt-2" type="submit">Update</button>
+    <button class="btn btn-primary btn-danger" type="submit">Create</button>
   </form>
-  <form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
-    <button class="btn btn-outline-danger mt-2" type="submit">Remove</button>
-  </form>
-</div>
 
+</div>
 </body>
 </html>

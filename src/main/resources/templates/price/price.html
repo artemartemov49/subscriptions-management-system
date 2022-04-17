@@ -1,28 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Duration</title>
+  <title>Price</title>
 </head>
 <body>
-<div>
-  <label for="itemName">Activity:
-    <span id="itemName" th:text="${price.item.name}"></span>
-  </label>
-  <label for="amount">Amount:
-    <span id="amount" th:text="${price.amount}"></span>
-  </label>
-  <label for="durationMonths"> Count month:
-    <span id="durationMonths" th:text="${price.duration.months}"></span>
-  </label>
+<div layout:fragment="content">
+  <h4>Price</h4>
+  <div class="row mb-5">
+    <label for="itemName" class="col-sm-2 col-form-label">Activity:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control form-control-sm" id="itemName"
+             th:placeholder="${price.item.name}"
+             disabled>
+    </div>
+
+    <label for="amount" class="col-sm-2 col-form-label">Amount:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control form-control-sm" id="amount"
+             th:placeholder="${price.amount}"
+             disabled>
+    </div>
+
+    <label for="durationMonths" class="col-sm-2 col-form-label">Count month:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control form-control-sm" id="durationMonths"
+             th:placeholder="${price.duration.months}"
+             disabled>
+    </div>
+  </div>
+  <div class="btn-group mt-2">
+    <a class="btn btn-primary p-lg" th:href="@{/prices/{priceId}/update(priceId=${price.id})}" role="button">Update price</a>
+    <form th:action="@{/prices/{priceId}/delete(priceId=${price.id})}" method="post">
+      <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
+    </form>
+  </div>
 </div>
-<button type="button">
-  <a th:href="@{/prices/{priceId}/update(priceId=${price.id})}">Update price</a>
-</button>
-<form th:action="@{/prices/{priceId}/delete(priceId=${price.id})}" method="post">
-  <button type="submit">Remove</button>
-</form>
-
-
 </body>
 </html>

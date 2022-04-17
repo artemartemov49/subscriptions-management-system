@@ -43,7 +43,7 @@ public class UserController {
     public String create(Model model,
                          UserCreateEditDto user) {
         model.addAttribute("user", user);
-        return "user/create";
+        return "user/userCreate";
     }
 
     @PostMapping("/create")
