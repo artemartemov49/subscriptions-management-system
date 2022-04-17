@@ -5,15 +5,37 @@
   <title>Edit duration</title>
 </head>
 <body>
-<form th:action="@{/durations/{durationId}/update(durationId=${duration.id})}" method="post" th:object="${duration}">
+<form th:action="@{/prices/{priceId}/update(priceId=${price.id})}" method="post">
   <div>
-    <label for="months">Count month:
-      <input id="months" type="text" name="months" th:value="*{months}">
+    <label for="item">Activity name:
+      <select name="itemId" id="item">
+        <option th:each="item : ${items}"
+                th:value="${item.id}"
+                th:selected="${item.id == price.item.id}"
+                th:text="${item.name}">Activity
+        </option>
+      </select>
+    </label>
+  </div>
+  <div>
+    <label for="amount">Amount:
+      <input id="amount" type="text" name="amount" th:value="${price.amount}">
+    </label>
+  </div>
+  <div>
+    <label for="duration">Count months:
+      <select name="durationId" id="duration">
+        <option th:each="duration : ${durations}"
+                th:value="${duration.id}"
+                th:selected="${duration.id == price.duration.id}"
+                th:text="${duration.months}">Activity
+        </option>
+      </select>
     </label>
   </div>
   <button type="submit">Update</button>
 </form>
-<form th:action="@{/durations/{durationId}/delete(durationId=${duration.id})}" method="post">
+<form th:action="@{/prices/{priceId}/delete(priceId=${price.id})}" method="post">
   <button type="submit">Remove</button>
 </form>
 </body>

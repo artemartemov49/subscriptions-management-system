@@ -59,10 +59,19 @@ public class UserController {
         return "redirect:/users/" + userService.create(user).getId();
     }
 
+    @GetMapping("{id}/update")
+    public String update(@PathVariable Integer id, Model model) {
+        return userService.findById(id)
+            .map(user -> {
+                model.addAttribute("user", user);
+                return "user/userEdit";
+            }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping("{id}/update")
     public String update(@PathVariable Integer id, @Validated UserCreateEditDto user) {
         return userService.update(id, user)
-            .map(it -> "redirect:/users/{id}")
+            .map(it -> "redirect:/users/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 

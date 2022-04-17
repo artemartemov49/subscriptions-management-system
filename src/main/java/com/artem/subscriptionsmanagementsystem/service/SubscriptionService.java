@@ -1,6 +1,9 @@
 package com.artem.subscriptionsmanagementsystem.service;
 
 import com.artem.subscriptionsmanagementsystem.database.repository.SubscriptionRepository;
+import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
+import com.artem.subscriptionsmanagementsystem.dto.order.OrderReadDto;
+import com.artem.subscriptionsmanagementsystem.dto.order.SubscriptionWithOrderCreateDto;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionEditDto;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionReadDto;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class SubscriptionService {
 
+    private final OrderService orderService;
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionReadMapper subscriptionReadMapper;
     private final SubscriptionCreateMapper subscriptionCreateMapper;
@@ -43,6 +47,16 @@ public class SubscriptionService {
             .orElseThrow();
     }
 
+    public SubscriptionReadDto createWithOrder(SubscriptionWithOrderCreateDto subscriptionAndOrder) {
+        SubscriptionCreateDto subscriptionCreateDto = new SubscriptionCreateDto(subscriptionAndOrder.getUserId(), subscriptionAndOrder.getItemId());
+        var subscription = create(subscriptionCreateDto);
+
+        OrderReadDto orderReadDto = createOrder(subscriptionAndOrder, subscription);
+        addOrder(subscription, orderReadDto);
+
+        return subscription;
+    }
+
     @Transactional
     public Optional<SubscriptionReadDto> update(Integer id, SubscriptionEditDto subscriptionDto) {
         return subscriptionRepository.findById(id)
@@ -60,5 +74,15 @@ public class SubscriptionService {
                 return true;
             })
             .orElse(false);
+    }
+
+    private OrderReadDto createOrder(SubscriptionWithOrderCreateDto subscriptionAndOrder,
+                                     SubscriptionReadDto subscription) {
+        var orderCreateDto = new OrderCreateDto(subscription.getId(), subscriptionAndOrder.getPriceId());
+        return orderService.create(orderCreateDto);
+    }
+
+    private void addOrder(SubscriptionReadDto subscription, OrderReadDto orderDto) {
+        subscription.getOrders().add(orderDto);
     }
 }

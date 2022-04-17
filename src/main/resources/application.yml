@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    format:
+      date: iso
   datasource:
     url: jdbc:postgresql://localhost:5434/postgres
     username: postgres

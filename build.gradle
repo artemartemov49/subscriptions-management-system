@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.springframework.data:spring-data-envers'
     implementation 'com.querydsl:querydsl-jpa'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'org.apache.commons:commons-lang3'
 
     annotationProcessor 'com.querydsl:querydsl-apt'
 

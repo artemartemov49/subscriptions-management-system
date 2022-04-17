@@ -6,9 +6,13 @@ import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionRead
 import com.artem.subscriptionsmanagementsystem.mapper.Mapper;
 import com.artem.subscriptionsmanagementsystem.mapper.item.ItemReadMapper;
 import com.artem.subscriptionsmanagementsystem.mapper.order.OrderReadMapper;
+import com.artem.subscriptionsmanagementsystem.util.DateUtil;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.DateUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -23,12 +27,14 @@ public class SubscriptionReadMapper implements Mapper<Subscription, Subscription
         List<OrderReadDto> orders = object.getOrders().stream()
             .map(orderReadMapper::map)
             .toList();
+        var period = DateUtil.stringifyPeriod(object.getStartTime(), object.getEndTime());
 
         return new SubscriptionReadDto(
             object.getId(),
             item,
             object.getStartTime(),
             object.getEndTime(),
+            period,
             object.getStatus(),
             orders
         );

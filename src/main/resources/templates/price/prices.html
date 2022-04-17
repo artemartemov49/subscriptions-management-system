@@ -7,7 +7,7 @@
 <body>
 <div>
   <div th:each="price : ${prices}">
-    <a th:href="@{'/durations/' + ${price.id}}" th:text="|Sport name: ${price.item.name}, Amount: ${price.amount}, Count month: ${price.duration.months}|"></a>
+    <a th:href="@{'/prices/' + ${price.id}}" th:text="|Activity name: ${price.item.name}, Amount: ${price.amount}, Count month: ${price.duration.months}|"></a>
   </div>
 </div>
 </body>

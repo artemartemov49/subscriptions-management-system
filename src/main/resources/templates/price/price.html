@@ -6,14 +6,20 @@
 </head>
 <body>
 <div>
-  <label for="months">Count month:
-    <span id="months" th:text="${duration.months}"></span>
+  <label for="itemName">Activity:
+    <span id="itemName" th:text="${price.item.name}"></span>
+  </label>
+  <label for="amount">Amount:
+    <span id="amount" th:text="${price.amount}"></span>
+  </label>
+  <label for="durationMonths"> Count month:
+    <span id="durationMonths" th:text="${price.duration.months}"></span>
   </label>
 </div>
 <button type="button">
-  <a th:href="@{/durations/{durationId}/update(durationId=${duration.id})}">Update duration</a>
+  <a th:href="@{/prices/{priceId}/update(priceId=${price.id})}">Update price</a>
 </button>
-<form th:action="@{/durations/{durationId}/delete(durationId=${duration.id})}" method="post">
+<form th:action="@{/prices/{priceId}/delete(priceId=${price.id})}" method="post">
   <button type="submit">Remove</button>
 </form>
 
