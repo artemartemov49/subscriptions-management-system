@@ -13,7 +13,7 @@
     <div class="row mb-5">
       <div class="row mb-2">
         <label for="item" class="col-md-2 col-form-label">Activity name:</label>
-        <select class="form-select col-md-5" name="itemId" id="item">
+        <select class="form-select form-select-sm col-md-3 w-25" name="itemId" id="item">
           <option th:each="item : ${items}"
                   th:value="${item.id}"
                   th:selected="${item.id == price.item.id}"
@@ -24,14 +24,14 @@
       <div class="row mb-2">
         <label for="amount" class="col-md-2 col-form-label">Amount:</label>
         <div class="col-md-3">
-          <input type="text" class="form-control form-control-sm" id="amount"
+          <input type="text" class="form-control" id="amount"
                  th:field="${price.amount}">
         </div>
       </div>
 
       <div class="row">
         <label for="duration" class="col-md-2 col-form-label">Count months:</label>
-        <select class="form-select col-md-3" name="durationId" id="duration">
+        <select class="form-select col-md-3 w-25" name="durationId" id="duration">
           <option th:each="duration : ${durations}"
                   th:value="${duration.id}"
                   th:selected="${duration.id == price.duration.id}"

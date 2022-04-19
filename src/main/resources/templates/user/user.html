@@ -10,42 +10,53 @@
 <div layout:fragment="content">
   <h4>User</h4>
   <div class="row mb-5">
-    <label for="name" class="col-sm-2 col-form-label">Name:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control form-control-sm" id="name"
-             th:placeholder="${user.name}"
-             disabled>
+    <div class="row mb-1">
+      <label for="name" class="col-sm-2 col-form-label">Name:</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="name"
+               th:placeholder="${user.name}"
+               disabled>
+      </div>
     </div>
-    <label for="email" class="col-sm-2 col-form-label">Email:</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control form-control-sm" id="email"
-             th:placeholder="${user.email}"
-             disabled>
+    <div class="row mb-1">
+      <label for="email" class="col-sm-2 col-form-label">Email:</label>
+      <div class="col-sm-5">
+        <input type="email" class="form-control" id="email"
+               th:placeholder="${user.email}"
+               disabled>
+      </div>
     </div>
-    <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control form-control-sm" id="phone"
-             th:placeholder="${user.phone}"
-             disabled>
+    <div class="row">
+      <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="phone"
+               th:placeholder="${user.phone}"
+               disabled>
+      </div>
     </div>
   </div>
   <div th:each="subscription : ${user.subscriptions}" class="row">
-    <div class="fw-bold col-sm-12" th:text="|${subscription.item.name} subscription: |">
+    <div class="fw-bold col-sm-12 mb-1" th:text="|${subscription.item.name} subscription: |">
       Subscription
     </div>
-    <label for="time" class="col-sm-2 col-form-label">Left time:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control form-control-sm" id="time"
-             th:placeholder="${subscription.period}" disabled>
+    <div class="row mb-1">
+      <label for="time" class="col-sm-2 col-form-label">Left time:</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="time"
+               th:placeholder="${subscription.period}" disabled>
+      </div>
     </div>
-    <label for="status" class="col-sm-2 col-form-label">Status:</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control form-control-sm" id="status"
-             th:placeholder="${subscription.status.name()}" disabled>
+    <div class="row mb-1">
+      <label for="status" class="col-sm-2 col-form-label">Status:</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="status"
+               th:placeholder="${subscription.status.name()}" disabled>
+      </div>
     </div>
   </div>
   <div class="btn-group mt-2">
-    <a class="btn btn-primary p-lg" th:href="@{/users/{userId}/update(userId=${user.id})}" role="button">Update
+    <a class="btn btn-primary p-lg" th:href="@{/users/{userId}/update(userId=${user.id})}"
+       role="button">Update
       user</a>
     <form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
       <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>

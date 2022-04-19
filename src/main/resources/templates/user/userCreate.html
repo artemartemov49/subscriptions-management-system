@@ -11,22 +11,26 @@
   <form th:action="@{/users/create}" method="post">
     <h4>Create User</h4>
     <div class="row mb-5">
-      <label for="name" class="col-sm-2 col-form-label">Name:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control form-control-sm" id="name"
-               th:text="${user.name}">
+      <div class="row mb-1">
+        <label for="name" class="col-sm-2 col-form-label">Name:</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="name"
+                 th:text="${user.name}">
+        </div>
       </div>
-
-      <label for="email" class="col-sm-2 col-form-label">Email:</label>
-      <div class="col-sm-10">
-        <input type="email" class="form-control form-control-sm" id="email"
-               th:text="${user.email}">
+      <div class="row mb-1">
+        <label for="email" class="col-sm-2 col-form-label">Email:</label>
+        <div class="col-sm-3">
+          <input type="email" class="form-control" id="email"
+                 th:text="${user.email}">
+        </div>
       </div>
-
-      <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control form-control-sm" id="phone"
-               th:text="${user.phone}">
+      <div class="row mb-1">
+        <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="phone"
+                 th:text="${user.phone}">
+        </div>
       </div>
     </div>
     <button class="btn btn-primary" type="submit">Create</button>
