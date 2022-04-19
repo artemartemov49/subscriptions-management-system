@@ -12,7 +12,7 @@ public interface PriceRepository extends
     QuerydslPredicateExecutor<Price> {
 
     @EntityGraph(attributePaths = {"item", "duration"})
-    List<Price> findAll();
+    List<Price> findAllByOrderByItemId();
 
     @EntityGraph(attributePaths = {"item", "duration"})
     List<Price> findAllByItemId(Integer id);

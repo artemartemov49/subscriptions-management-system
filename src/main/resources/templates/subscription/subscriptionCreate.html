@@ -12,8 +12,11 @@
     <h4>Create Subscription</h4>
     <div class="row mb-5">
       <div class="row mb-1">
-        <label for="userName" class="col-sm-2 col-form-label fw-bold">
+        <label for="userName" class="col-sm-2 col-form-label fw-bold" th:if="${user}">
           <a th:href="@{/users/{userId}(userId=${user.id})}">User:</a></label>
+        <label for="userName" class="col-sm-2 col-form-label" th:unless="${user}">
+          User:
+        </label>
         <select class="form-select form-select-sm col-md-3 w-25" name="userId" id="userName">
           <option th:each="user : ${users}"
                   th:value="${user.id}"
@@ -31,7 +34,7 @@
       </div>
       <div class="row mb-1">
         <label for="activity" class="col-md-2 col-form-label">Activity name:</label>
-        <select class="form-select form-select-sm col-md-3 w-50" name="priceId" id="activity">
+        <select class="form-select form-select-sm col-md-3 w-auto" name="priceId" id="activity">
           <option th:each="price : ${prices}"
                   th:value="${price.id}"
                   th:selected="${price.id == subscription.priceId}"
