@@ -53,7 +53,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/users/create";
+            return "redirect:/user/userCreate";
         }
 
         return "redirect:/users/" + userService.create(user).getId();
@@ -69,7 +69,9 @@ public class UserController {
     }
 
     @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id, @Validated UserCreateEditDto user) {
+    public String update(@PathVariable Integer id,
+                         BindingResult bindingResult,
+                         @Validated UserCreateEditDto user) {
         return userService.update(id, user)
             .map(it -> "redirect:/users/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

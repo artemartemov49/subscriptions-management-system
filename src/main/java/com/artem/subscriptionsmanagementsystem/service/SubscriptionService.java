@@ -1,7 +1,5 @@
 package com.artem.subscriptionsmanagementsystem.service;
 
-import com.artem.subscriptionsmanagementsystem.database.entity.Item;
-import com.artem.subscriptionsmanagementsystem.database.repository.ItemRepository;
 import com.artem.subscriptionsmanagementsystem.database.repository.PriceRepository;
 import com.artem.subscriptionsmanagementsystem.database.repository.SubscriptionRepository;
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
@@ -13,6 +11,7 @@ import com.artem.subscriptionsmanagementsystem.mapper.subscription.SubscriptionC
 import com.artem.subscriptionsmanagementsystem.mapper.subscription.SubscriptionEditMapper;
 import com.artem.subscriptionsmanagementsystem.mapper.subscription.SubscriptionReadMapper;
 import com.artem.subscriptionsmanagementsystem.mapper.subscription.SubscriptionUserReadMapper;
+import com.artem.subscriptionsmanagementsystem.util.SubscriptionUtil;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +94,25 @@ public class SubscriptionService {
     }
 
     @Transactional
+    public void updateStatusForAll() {
+        subscriptionRepository.findAll().forEach(entity -> {
+            SubscriptionUtil.setStatus(entity);
+            subscriptionRepository.saveAndFlush(entity);
+        });
+    }
+
+    @Transactional
+    public boolean updateStatus(Integer id, SubscriptionEditDto subscriptionDto) {
+        return subscriptionRepository.findById(id)
+            .map(entity -> {
+                SubscriptionUtil.setStatus(entity);
+                subscriptionRepository.saveAndFlush(entity);
+                return true;
+            })
+            .orElse(false);
+    }
+
+    @Transactional
     public boolean delete(Integer id) {
         return subscriptionRepository.findById(id)
             .map(entity -> {
@@ -107,7 +125,8 @@ public class SubscriptionService {
 
     private int createSubscriptionIfNotExist(SubscriptionCreateDto subscriptionAndOrder,
                                              Optional<SubscriptionReadDto> maybeSubscription) {
-        var subscriptionDto = new SubscriptionCreateDto(subscriptionAndOrder.getUserId(), subscriptionAndOrder.getPriceId());
+        var subscriptionDto = new SubscriptionCreateDto(subscriptionAndOrder.getUserId(),
+            subscriptionAndOrder.getPriceId());
 
         return maybeSubscription.isEmpty()
             ? create(subscriptionDto).getId()

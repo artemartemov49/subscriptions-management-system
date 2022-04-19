@@ -63,6 +63,8 @@
        role="button">Update user</a>
     <a class="btn btn-primary p-lg ms-3" th:href="@{/subscriptions/add/{userId}(userId=${user.id})}"
        role="button">Add subscription</a>
+    <a class="btn btn-primary p-lg ms-3" th:href="|@{/orders}?userId=${user.id}|"
+       role="button">Orders</a>
     <form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
       <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
     </form>

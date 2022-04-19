@@ -9,5 +9,5 @@ public interface OrderRepository extends
     JpaRepository<Order, Integer>,
     QuerydslPredicateExecutor<Order> {
 
-    List<Order> findAllBySubscriptionId(Integer subscriptionId);
+    List<Order> findAllBySubscriptionUserId(Integer userId);
 }

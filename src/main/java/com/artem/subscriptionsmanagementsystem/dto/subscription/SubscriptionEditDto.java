@@ -7,9 +7,6 @@ import lombok.Value;
 @Value
 public class SubscriptionEditDto {
 
-    Integer userId;
-    Integer itemId;
     LocalDate startTime;
     LocalDate endTime;
-    Status status;
 }

@@ -81,7 +81,7 @@ public class SubscriptionController {
 
     @GetMapping("{id}/update")
     public String update(@PathVariable Integer id, Model model) {
-        return subscriptionService.findById(id)
+        return subscriptionService.findByIdWithUser(id)
             .map(subscription -> {
                 model.addAttribute("subscription", subscription);
                 return "subscription/subscriptionEdit";
