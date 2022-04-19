@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscription</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <form th:action="@{/subscriptions/add}" method="post">
+    <h4>Create Subscription</h4>
+    <div class="row mb-5">
+      <div class="row mb-1">
+        <label for="userName" class="col-sm-2 col-form-label fw-bold">
+          <a th:href="@{/users/{userId}(userId=${user.id})}">User:</a></label>
+        <select class="form-select form-select-sm col-md-3 w-25" name="userId" id="userName">
+          <option th:each="user : ${users}"
+                  th:value="${user.id}"
+                  th:if="${subscription.userId}"
+                  th:selected="${subscription.userId == user.id}"
+                  th:text="${user.name}">Activity
+          </option>
+          <option th:each="user : ${users}"
+                  th:value="${user.id}"
+                  th:unless="${subscription.userId}"
+                  th:selected="${userId == user.id}"
+                  th:text="${user.name}">Activity
+          </option>
+        </select>
+      </div>
+      <div class="row mb-1">
+        <label for="activity" class="col-md-2 col-form-label">Activity name:</label>
+        <select class="form-select form-select-sm col-md-3 w-50" name="priceId" id="activity">
+          <option th:each="price : ${prices}"
+                  th:value="${price.id}"
+                  th:selected="${price.id == subscription.priceId}"
+                  th:text="|activity: ${price.item.name}, amount: ${price.amount}, count month: ${price.duration.months} |">
+            Price
+          </option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Create</button>
+  </form>
+</div>
+</body>
+</html>

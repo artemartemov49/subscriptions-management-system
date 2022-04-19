@@ -6,6 +6,7 @@ import com.artem.subscriptionsmanagementsystem.database.entity.Item;
 import com.artem.subscriptionsmanagementsystem.database.entity.Subscription;
 import com.artem.subscriptionsmanagementsystem.database.entity.User;
 import com.artem.subscriptionsmanagementsystem.database.repository.ItemRepository;
+import com.artem.subscriptionsmanagementsystem.database.repository.PriceRepository;
 import com.artem.subscriptionsmanagementsystem.database.repository.UserRepository;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.mapper.Mapper;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateDto, Subscription> {
 
-    private final ItemRepository itemRepository;
+    private final PriceRepository priceRepository;
     private final UserRepository userRepository;
 
     @Override
@@ -49,7 +50,8 @@ public class SubscriptionCreateMapper implements Mapper<SubscriptionCreateDto, S
     }
 
     private Item getItem(SubscriptionCreateDto object) {
-        return itemRepository.findById(object.getItemId())
-            .orElseThrow();
+        return priceRepository.findById(object.getPriceId())
+            .orElseThrow()
+            .getItem();
     }
 }

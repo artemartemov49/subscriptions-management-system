@@ -2,8 +2,10 @@ package com.artem.subscriptionsmanagementsystem.service;
 
 import com.artem.subscriptionsmanagementsystem.database.repository.UserRepository;
 import com.artem.subscriptionsmanagementsystem.dto.user.UserCreateEditDto;
+import com.artem.subscriptionsmanagementsystem.dto.user.UserBasicReadDto;
 import com.artem.subscriptionsmanagementsystem.dto.user.UserReadDto;
 import com.artem.subscriptionsmanagementsystem.mapper.user.UserCreateEditMapper;
+import com.artem.subscriptionsmanagementsystem.mapper.user.UserBasicReadMapper;
 import com.artem.subscriptionsmanagementsystem.mapper.user.UserReadMapper;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserBasicReadMapper userBasicReadMapper;
     private final UserReadMapper userReadMapper;
     private final UserCreateEditMapper userCreateEditMapper;
 
-    public List<UserReadDto> findAll() {
+    public List<UserBasicReadDto> findAll() {
         return userRepository.findAll().stream()
-            .map(userReadMapper::map)
+            .map(userBasicReadMapper::map)
             .toList();
     }
 

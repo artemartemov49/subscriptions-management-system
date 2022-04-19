@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
-  <title>Create duration</title>
+  <title>Create price</title>
 </head>
 <body>
-<form th:action="@{/prices/create}" method="post">
-  <div>
-    <label for="item">Activity name:
-      <select name="itemId" id="item">
-        <option th:each="item : ${items}"
-                th:value="${item.id}"
-                th:selected="${item.id == price.itemId}"
-                th:text="${item.name}">Activity
-        </option>
-      </select>
-    </label>
-  </div>
-  <div>
-    <label for="amount">Amount:
-      <input id="amount" type="text" name="amount" th:value="${price.amount}">
-    </label>
-  </div>
-  <div>
-    <label for="duration">Count months:
-      <select name="durationId" id="duration">
-        <option th:each="duration : ${durations}"
-                th:value="${duration.id}"
-                th:selected="${duration.id == price.durationId}"
-                th:text="${duration.months}">Activity
-        </option>
-      </select>
-    </label>
-  </div>
-  <button type="submit">Create</button>
-</form>
+<div layout:fragment="content">
+  <form th:action="@{/prices/create}" method="post">
+    <h4>Create Price</h4>
+    <div class="row mb-5">
+      <div class="row mb-2">
+        <label for="item" class="col-md-2 col-form-label">Activity name:</label>
+        <select class="form-select form-select-sm col-md-3 w-25" name="itemId" id="item">
+          <option th:each="item : ${items}"
+                  th:value="${item.id}"
+                  th:selected="${item.id == price.itemId}"
+                  th:text="${item.name}">Activity
+          </option>
+        </select>
+      </div>
+      <div class="row mb-2">
+        <label for="amount" class="col-md-2 col-form-label">Amount:</label>
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="amount"
+                 th:field="${price.amount}">
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="duration" class="col-md-2 col-form-label">Count months:</label>
+        <select class="form-select col-md-3 w-25" name="durationId" id="duration">
+          <option th:each="duration : ${durations}"
+                  th:value="${duration.id}"
+                  th:selected="${duration.id == price.durationId}"
+                  th:text="${duration.months}">Activity
+          </option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-2" type="submit">Create</button>
+  </form>
+</div>
 </body>
 </html>

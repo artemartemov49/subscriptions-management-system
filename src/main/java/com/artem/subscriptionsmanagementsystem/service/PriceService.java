@@ -26,6 +26,12 @@ public class PriceService {
             .toList();
     }
 
+    public List<PriceReadDto> findAllByItemId(Integer itemId) {
+        return priceRepository.findAllByItemId(itemId).stream()
+            .map(priceReadMapper::map)
+            .toList();
+    }
+
     public Optional<PriceReadDto> findById(Integer id) {
         return priceRepository.findById(id)
             .map(priceReadMapper::map);

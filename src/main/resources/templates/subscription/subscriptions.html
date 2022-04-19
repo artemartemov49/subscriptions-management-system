@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Users</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h4>Subscriptions</h4>
+  <table class="table table-hover table-light table-sm">
+    <caption>List of subscriptions</caption>
+    <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">User name</th>
+      <th scope="col">Activity name</th>
+      <th scope="col">Left time</th>
+      <th scope="col">Status</th>
+      <th scope="col">Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="subscription : ${subscriptions}">
+      <th scope="row" th:text="${subscription.id}"></th>
+      <td>
+        <a th:href="@{/users/{userId}(userId=${subscription.user.id})}"
+           th:text="|${subscription.user.name}|">User name</a>
+      </td>
+      <td>
+        <a th:href="@{/items/{itemId}(itemId=${subscription.item.id})}"
+           th:text="|${subscription.item.name}|">Left time</a>
+      </td>
+      <td th:text="${subscription.period}"></td>
+      <td th:text="${subscription.status}"></td>
+      <td><a class="btn btn-outline-primary p-lg"
+             th:href="@{'/subscriptions/' + ${subscription.id}}">Details</a>
+
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <a class="btn btn-primary p-lg" th:href="@{/users/create}" role="button">Create user</a>
+</div>
+</body>
+</html>

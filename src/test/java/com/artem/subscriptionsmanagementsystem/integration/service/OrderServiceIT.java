@@ -6,8 +6,6 @@ import com.artem.subscriptionsmanagementsystem.database.entity.Order;
 import com.artem.subscriptionsmanagementsystem.database.entity.Status;
 import com.artem.subscriptionsmanagementsystem.database.repository.OrderRepository;
 import com.artem.subscriptionsmanagementsystem.dto.order.OrderCreateDto;
-import com.artem.subscriptionsmanagementsystem.dto.order.SubscriptionWithOrderCreateDto;
-import com.artem.subscriptionsmanagementsystem.dto.order.OrderReadDto;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.integration.IntegrationTestBase;
 import com.artem.subscriptionsmanagementsystem.service.OrderService;

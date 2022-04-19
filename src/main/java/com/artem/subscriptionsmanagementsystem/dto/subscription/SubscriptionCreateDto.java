@@ -6,5 +6,5 @@ import lombok.Value;
 public class SubscriptionCreateDto {
 
     Integer userId;
-    Integer itemId;
+    Integer priceId;
 }

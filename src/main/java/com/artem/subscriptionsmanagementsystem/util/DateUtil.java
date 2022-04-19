@@ -1,28 +1,43 @@
 package com.artem.subscriptionsmanagementsystem.util;
 
-import com.artem.subscriptionsmanagementsystem.database.entity.Status;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 public final class DateUtil {
 
-    public static String stringifyPeriod(LocalDate startTime, LocalDate endTime) {
-        var startMills = startTime.atStartOfDay().atZone(ZoneId.of("EET")).toInstant().toEpochMilli();
-        var endMills = endTime.atStartOfDay().atZone(ZoneId.of("EET")).toInstant().toEpochMilli();
+    public static String stringifyPeriodFromNow(LocalDate endTime) {
+        var startMills = getMills(LocalDate.now());
+        var endMills = getMills(endTime);
 
         Period period = new Period(startMills, endMills);
-        var formatter = new PeriodFormatterBuilder()
+        return printPeriod(period);
+    }
+
+    public static String stringifyPeriod(LocalDate startTime, LocalDate endTime) {
+        var startMills = getMills(startTime);
+        var endMills = getMills(endTime);
+
+        Period period = new Period(startMills, endMills);
+        return printPeriod(period);
+    }
+
+    private static String printPeriod(Period period) {
+        return new PeriodFormatterBuilder()
             .appendYears().appendSuffix(" year", " years")
             .appendSeparator(" ")
             .appendMonths().appendSuffix(" month", " months")
             .appendSeparator(" ")
             .appendDays().appendSuffix(" day", " days")
             .appendSeparator(" ")
-            .printZeroIfSupported().minimumPrintedDigits(2)
-            .toFormatter();
+            .toFormatter()
+            .print(period.normalizedStandard(PeriodType.yearMonthDay()));
+    }
 
-        return formatter.print(period);
+    private static long getMills(LocalDate endTime) {
+        return endTime.atStartOfDay().atZone(ZoneId.of("EET")).toInstant().toEpochMilli();
     }
 }

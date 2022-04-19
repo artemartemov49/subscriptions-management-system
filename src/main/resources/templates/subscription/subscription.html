@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
 <head>
   <meta charset="UTF-8">
   <title>Subscription</title>
 </head>
 <body>
+<div layout:fragment="content">
+  <h4>Subscription</h4>
+  <div class="row mb-1">
 
+    <label for="userName" class="col-sm-2 col-form-label">
+      <a th:href="@{/users/{userId}(userId=${subscription.user.id})}" class="fw-bold">User name:
+      </a></label>
+
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="userName"
+             th:placeholder="${subscription.user.name}" disabled>
+    </div>
+  </div>
+  <div class="row mb-1">
+    <label for="activityName" class="col-sm-2 col-form-label">Activity name:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="activityName"
+             th:placeholder="${subscription.item.name}" disabled>
+    </div>
+  </div>
+  <div class="row mb-1">
+    <label for="time" class="col-sm-2 col-form-label">Left time:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="time"
+             th:placeholder="${subscription.period}" disabled>
+    </div>
+  </div>
+  <div class="row mb-1">
+    <label for="status" class="col-sm-2 col-form-label">Status:</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="status"
+             th:placeholder="${subscription.status.name()}" disabled>
+    </div>
+  </div>
+  <div class="btn-group mt-2">
+    <a class="btn btn-primary p-lg" th:href="|@{/subscriptions/add/{userId}(userId=${subscription.user.id})}?itemId=${subscription.item.id}|"
+       role="button">Add subscription</a>
+    <a class="btn btn-primary p-lg  ms-3"
+       th:href="@{/subscriptions/{subscriptionId}/update(subscriptionId=${subscription.user.id})}"
+       role="button">Update subscription</a>
+    <form th:action="@{/subscriptions/{subscriptionId}/delete(subscriptionId=${subscription.id})}"
+          method="post">
+      <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>

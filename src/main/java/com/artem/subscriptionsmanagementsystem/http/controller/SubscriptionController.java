@@ -1,9 +1,11 @@
 
 package com.artem.subscriptionsmanagementsystem.http.controller;
 
-import com.artem.subscriptionsmanagementsystem.dto.order.SubscriptionWithOrderCreateDto;
+import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionCreateDto;
 import com.artem.subscriptionsmanagementsystem.dto.subscription.SubscriptionEditDto;
+import com.artem.subscriptionsmanagementsystem.service.PriceService;
 import com.artem.subscriptionsmanagementsystem.service.SubscriptionService;
+import com.artem.subscriptionsmanagementsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,32 +26,48 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
+    private final PriceService priceService;
+    private final UserService userService;
 
     @GetMapping
     public String findAll(Model model) {
-        model.addAttribute("subscriptions", subscriptionService.findAll());
+        model.addAttribute("subscriptions", subscriptionService.findAllWithUser());
 
         return "subscription/subscriptions";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Integer id, Model model) {
-        return subscriptionService.findById(id)
+        return subscriptionService.findByIdWithUser(id)
             .map(subscription -> {
                 model.addAttribute("subscription", subscription);
                 return "subscription/subscription";
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/create")
-    public String createWithOrder(Model model,
-                                  SubscriptionWithOrderCreateDto subscription) {
-        model.addAttribute("subscription", subscription);
-        return "subscription/subscriptionCreate";
+    @GetMapping("/add/{userId}")
+    public String addSubscription(@PathVariable Integer userId,
+                                  SubscriptionCreateDto subscription,
+                                  @RequestParam(required = false) Integer itemId,
+                                  Model model) {
+        var prices = itemId == null
+            ? priceService.findAll()
+            : priceService.findAllByItemId(itemId);
+
+        return userService.findById(userId)
+            .map(userDto -> {
+                    model.addAttribute("user", userDto);
+                    model.addAttribute("users", userService.findAll());
+                    model.addAttribute("prices", prices);
+                    model.addAttribute("subscription", subscription);
+                    return "subscription/subscriptionCreate";
+                }
+            ).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
     }
 
-    @PostMapping("/create")
-    public String createWithOrder(@Validated SubscriptionWithOrderCreateDto subscription,
+    @PostMapping("/add")
+    public String addSubscription(@Validated SubscriptionCreateDto subscription,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -57,7 +76,7 @@ public class SubscriptionController {
             return "redirect:/subscriptions/create";
         }
 
-        return "redirect:/subscriptions/" + subscriptionService.createWithOrder(subscription).getId();
+        return "redirect:/subscriptions/" + subscriptionService.addSubscription(subscription).getId();
     }
 
     @GetMapping("{id}/update")

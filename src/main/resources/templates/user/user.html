@@ -36,8 +36,12 @@
     </div>
   </div>
   <div th:each="subscription : ${user.subscriptions}" class="row">
-    <div class="fw-bold col-sm-12 mb-1" th:text="|${subscription.item.name} subscription: |">
-      Subscription
+
+    <div class="fw-bold col-sm-12 mb-1">
+      <a th:href="@{/subscriptions/{subscriptionId}(subscriptionId=${subscription.id})}"
+         th:text="|${subscription.item.name} subscription: |"
+      >Subscription:
+      </a>
     </div>
     <div class="row mb-1">
       <label for="time" class="col-sm-2 col-form-label">Left time:</label>
@@ -56,8 +60,9 @@
   </div>
   <div class="btn-group mt-2">
     <a class="btn btn-primary p-lg" th:href="@{/users/{userId}/update(userId=${user.id})}"
-       role="button">Update
-      user</a>
+       role="button">Update user</a>
+    <a class="btn btn-primary p-lg ms-3" th:href="@{/subscriptions/add/{userId}(userId=${user.id})}"
+       role="button">Add subscription</a>
     <form th:action="@{/users/{userId}/delete(userId=${user.id})}" method="post">
       <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
     </form>
