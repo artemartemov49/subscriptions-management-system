@@ -2,7 +2,9 @@ package com.artem.subscriptionsmanagementsystem.http.controller;
 
 import com.artem.subscriptionsmanagementsystem.dto.user.UserCreateEditDto;
 import com.artem.subscriptionsmanagementsystem.service.UserService;
+import javax.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
+import org.postgresql.util.LruCache.CreateAction;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,26 +43,27 @@ public class UserController {
 
     @GetMapping("/create")
     public String create(Model model,
-                         UserCreateEditDto user) {
+                         @ModelAttribute("user") UserCreateEditDto user) {
         model.addAttribute("user", user);
         return "user/userCreate";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated UserCreateEditDto user,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+    @PostMapping("/createUser")
+    public String createUser(@Validated UserCreateEditDto user,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/user/userCreate";
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/users/create";
         }
 
         return "redirect:/users/" + userService.create(user).getId();
     }
 
     @GetMapping("{id}/update")
-    public String update(@PathVariable Integer id, Model model) {
+    public String update(@PathVariable Integer id,
+                         Model model) {
         return userService.findById(id)
             .map(user -> {
                 model.addAttribute("user", user);
@@ -68,10 +71,17 @@ public class UserController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id,
-                         BindingResult bindingResult,
-                         @Validated UserCreateEditDto user) {
+    @PostMapping("{id}/updateUser")
+    public String updateUser(@PathVariable Integer id,
+                             @Validated UserCreateEditDto user,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("user", user);
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/users/{id}/update";
+        }
+
         return userService.update(id, user)
             .map(it -> "redirect:/users/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

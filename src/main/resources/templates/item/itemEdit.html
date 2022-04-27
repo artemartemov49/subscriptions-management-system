@@ -8,13 +8,15 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/items/{itemId}/update(itemId=${item.id})}" method="post" th:object="${item}">
+  <form th:action="@{/items/{itemId}/updateItem(itemId=${item.id})}" method="post" th:object="${item}">
     <h4>Edit Activity</h4>
     <div class="row mb-5">
       <label for="name" class="col-sm-2 col-form-label">Name:</label>
       <div class="col-sm-3">
-        <input type="text" class="form-control" id="name"
-               th:field="*{name}">
+        <input type="text" class="form-control" id="name" th:field="*{name}">
+        <div th:if="${bindingResult}">
+          <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('name')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+        </div>
       </div>
     </div>
     <button class="btn btn-primary mt-2" type="submit">Update</button>

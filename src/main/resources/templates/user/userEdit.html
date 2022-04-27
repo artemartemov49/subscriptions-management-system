@@ -8,28 +8,37 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/users/{userId}/update(userId=${user.id})}" method="post">
+  <form th:action="@{/users/{userId}/updateUser(userId=${user.id})}" th:object="${user}" method="post">
     <h4>Create User</h4>
     <div class="row mb-5">
       <div class="row mb-1">
         <label for="name" class="col-sm-2 col-form-label">Name:</label>
         <div class="col-sm-3">
           <input type="text" class="form-control " id="name"
-                 th:field="${user.name}">
+                 th:field="*{name}">
+          <div th:if="${bindingResult}">
+            <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('name')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+          </div>
         </div>
       </div>
       <div class="row mb-1">
         <label for="email" class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-3">
           <input type="email" class="form-control" id="email"
-                 th:field="${user.email}">
+                 th:field="*{email}">
+          <div th:if="${bindingResult}">
+            <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('email')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+          </div>
         </div>
       </div>
       <div class="row mb-1">
         <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
         <div class="col-sm-3">
           <input type="text" class="form-control" id="phone"
-                 th:field="${user.phone}">
+                 th:field="*{phone}">
+          <div th:if="${bindingResult}">
+            <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('phone')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+          </div>
         </div>
       </div>
     </div>

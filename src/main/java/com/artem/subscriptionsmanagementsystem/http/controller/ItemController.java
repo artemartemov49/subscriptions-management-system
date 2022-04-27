@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,18 +43,18 @@ public class ItemController {
 
     @GetMapping("/create")
     public String create(Model model,
-                         ItemCreateEditDto item) {
+                         @ModelAttribute("item") ItemCreateEditDto item) {
         model.addAttribute("item", item);
         return "item/itemCreate";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated ItemCreateEditDto item,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+    @PostMapping("/createItem")
+    public String createItem(@Validated ItemCreateEditDto item,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("item", item);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
             return "redirect:/items/create";
         }
 
@@ -69,8 +70,16 @@ public class ItemController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id, @Validated ItemCreateEditDto item) {
+    @PostMapping("{id}/updateItem")
+    public String updateItem(@PathVariable Integer id, @Validated ItemCreateEditDto item,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("item", item);
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/items/{id}/update";
+        }
+
         return itemService.update(id, item)
             .map(it -> "redirect:/items/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

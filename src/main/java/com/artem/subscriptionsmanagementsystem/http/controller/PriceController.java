@@ -1,6 +1,5 @@
 package com.artem.subscriptionsmanagementsystem.http.controller;
 
-import com.artem.subscriptionsmanagementsystem.database.repository.ItemRepository;
 import com.artem.subscriptionsmanagementsystem.dto.price.PriceCreateEditDto;
 import com.artem.subscriptionsmanagementsystem.service.DurationService;
 import com.artem.subscriptionsmanagementsystem.service.ItemService;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,21 +45,21 @@ public class PriceController {
 
     @GetMapping("/create")
     public String create(Model model,
-                         PriceCreateEditDto item) {
-        model.addAttribute("price", item);
+                         @ModelAttribute("price") PriceCreateEditDto price) {
+        model.addAttribute("price", price);
         model.addAttribute("items", itemService.findAll());
         model.addAttribute("durations", durationService.findAll());
 
         return "price/priceCreate";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated PriceCreateEditDto price,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+    @PostMapping("/createPrice")
+    public String createPrice(@Validated PriceCreateEditDto price,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("price", price);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
             return "redirect:/prices/create";
         }
 
@@ -77,8 +77,17 @@ public class PriceController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id, @Validated PriceCreateEditDto price) {
+    @PostMapping("{id}/updatePrice")
+    public String updatePrice(@PathVariable Integer id,
+                              @Validated PriceCreateEditDto price,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("price", price);
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/prices/{id}/updatePrice";
+        }
+
         return priceService.update(id, price)
             .map(it -> "redirect:/prices/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

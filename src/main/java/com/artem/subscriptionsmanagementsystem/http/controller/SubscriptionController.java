@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/create")
-    public String create(SubscriptionCreateDto subscription, Model model) {
+    public String create(@ModelAttribute("subscription") SubscriptionCreateDto subscription, Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("prices", priceService.findAll());
         model.addAttribute("subscription", subscription);
@@ -54,10 +55,10 @@ public class SubscriptionController {
     }
 
     @GetMapping("/add/{userId}")
-    public String addSubscription(@PathVariable Integer userId,
-                                  SubscriptionCreateDto subscription,
-                                  @RequestParam(required = false) Integer itemId,
-                                  Model model) {
+    public String add(@PathVariable Integer userId,
+                      @ModelAttribute("subscription") SubscriptionCreateDto subscription,
+                      @RequestParam(required = false) Integer itemId,
+                      Model model) {
         var prices = itemId == null
             ? priceService.findAll()
             : priceService.findAllByItemId(itemId);
@@ -74,13 +75,13 @@ public class SubscriptionController {
 
     }
 
-    @PostMapping("/add")
+    @PostMapping("/addSubscription")
     public String addSubscription(@Validated SubscriptionCreateDto subscription,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("subscription", subscription);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
             return "redirect:/subscriptions/create";
         }
 
@@ -96,8 +97,17 @@ public class SubscriptionController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id, @Validated SubscriptionEditDto subscription) {
+    @PostMapping("{id}/updateSubscription")
+    public String updateSubscription(@PathVariable Integer id,
+                                     @Validated SubscriptionEditDto subscription,
+                                     BindingResult bindingResult,
+                                     RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("user", subscription);
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/subscriptions/{id}/update";
+        }
+
         return subscriptionService.update(id, subscription)
             .map(it -> "redirect:/subscriptions/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

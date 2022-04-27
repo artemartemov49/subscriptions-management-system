@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,18 +42,18 @@ public class DurationController {
 
     @GetMapping("/create")
     public String create(Model model,
-                         DurationCreateEditDto duration) {
+                         @ModelAttribute("duration") DurationCreateEditDto duration) {
         model.addAttribute("duration", duration);
         return "duration/durationCreate";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated DurationCreateEditDto duration,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) {
+    @PostMapping("/createDuration")
+    public String createDuration(@Validated DurationCreateEditDto duration,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("duration", duration);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
             return "redirect:/durations/create";
         }
 
@@ -68,8 +69,17 @@ public class DurationController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("{id}/update")
-    public String update(@PathVariable Integer id, @Validated DurationCreateEditDto duration) {
+    @PostMapping("{id}/updateDuration")
+    public String updateDuration(@PathVariable Integer id,
+                                 @Validated DurationCreateEditDto duration,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("duration", duration);
+            redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
+            return "redirect:/durations/{id}/update";
+        }
+
         return durationService.update(id, duration)
             .map(it -> "redirect:/durations/{id}/update")
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
