@@ -21,7 +21,7 @@ public class PriceService {
     private final PriceCreateEditMapper priceCreateEditMapper;
 
     public List<PriceReadDto> findAll() {
-        return priceRepository.findAll().stream()
+        return priceRepository.findAllByOrderByItemId().stream()
             .map(priceReadMapper::map)
             .toList();
     }

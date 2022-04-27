@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
-import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 public final class DateUtil {
@@ -25,6 +24,10 @@ public final class DateUtil {
         return printPeriod(period);
     }
 
+    private static long getMills(LocalDate endTime) {
+        return endTime.atStartOfDay().atZone(ZoneId.of("EET")).toInstant().toEpochMilli();
+    }
+
     private static String printPeriod(Period period) {
         return new PeriodFormatterBuilder()
             .appendYears().appendSuffix(" year", " years")
@@ -35,9 +38,5 @@ public final class DateUtil {
             .appendSeparator(" ")
             .toFormatter()
             .print(period.normalizedStandard(PeriodType.yearMonthDay()));
-    }
-
-    private static long getMills(LocalDate endTime) {
-        return endTime.atStartOfDay().atZone(ZoneId.of("EET")).toInstant().toEpochMilli();
     }
 }

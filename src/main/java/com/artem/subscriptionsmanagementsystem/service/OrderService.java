@@ -26,6 +26,12 @@ public class OrderService {
             .toList();
     }
 
+    public List<OrderReadDto> findAllByUserId(Integer userId) {
+        return orderRepository.findAllBySubscriptionUserId(userId).stream()
+            .map(orderReadMapper::map)
+            .toList();
+    }
+
     public Optional<OrderReadDto> findById(Integer id) {
         return orderRepository.findById(id)
             .map(orderReadMapper::map);

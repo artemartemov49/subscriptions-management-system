@@ -45,6 +45,14 @@ public class SubscriptionController {
             }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/create")
+    public String create(SubscriptionCreateDto subscription, Model model) {
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("prices", priceService.findAll());
+        model.addAttribute("subscription", subscription);
+        return "subscription/subscriptionCreate";
+    }
+
     @GetMapping("/add/{userId}")
     public String addSubscription(@PathVariable Integer userId,
                                   SubscriptionCreateDto subscription,
@@ -81,7 +89,7 @@ public class SubscriptionController {
 
     @GetMapping("{id}/update")
     public String update(@PathVariable Integer id, Model model) {
-        return subscriptionService.findById(id)
+        return subscriptionService.findByIdWithUser(id)
             .map(subscription -> {
                 model.addAttribute("subscription", subscription);
                 return "subscription/subscriptionEdit";

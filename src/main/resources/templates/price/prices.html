@@ -23,9 +23,16 @@
     <tbody>
     <tr th:each="price : ${prices}">
       <th scope="row" th:text="${price.id}"></th>
-      <td th:text="${price.item.name}"></td>
+      <td>
+        <a th:href="@{/items/{itemId}(itemId=${price.item.id})}"
+           th:text="${price.item.name}"></a>
+      </td>
       <td th:text="${price.amount}"></td>
-      <td th:text="${price.duration.months}"></td>
+      <td>
+        <a th:href="@{/durations/{durationId}(durationId=${price.duration.id})}"
+           th:text="${price.duration.months}"></a>
+
+      </td>
       <td>  <a class="btn btn-outline-primary p-lg" th:href="@{'/prices/' + ${price.id}}">Details</a></td>
     </tr>
     </tbody>

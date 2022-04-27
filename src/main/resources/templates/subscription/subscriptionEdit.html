@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscription</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <form th:action="@{/subscriptions/{subscriptionId}/update(subscriptionId=${subscription.id})}"
+        method="post">
+    <h4>Subscription</h4>
+    <div class="row">
+      <div class="row mb-1">
+
+        <label for="userName" class="col-sm-2 col-form-label">
+          <a th:href="@{/users/{userId}(userId=${subscription.user.id})}" class="fw-bold">User name:
+          </a></label>
+
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="userName"
+                 th:placeholder="${subscription.user.name}" disabled>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label for="activityName" class="col-sm-2 col-form-label">Activity name:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="activityName"
+                 th:placeholder="${subscription.item.name}" disabled>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label for="time" class="col-sm-2 col-form-label">Start time:</label>
+        <div class="col-sm-5">
+          <input type="date" class="form-control" id="time"
+                 th:field="${subscription.startTime}">
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label for="time" class="col-sm-2 col-form-label">End time:</label>
+        <div class="col-sm-5">
+          <input type="date" class="form-control" id="time"
+                 th:field="${subscription.endTime}">
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label for="status" class="col-sm-2 col-form-label">Status:</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="status"
+                 th:placeholder="${subscription.status.name()}" disabled>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-2" type="submit">Update</button>
+  </form>
+  <form th:action="@{/subscriptions/{subscriptionId}/delete(subscriptionId=${subscription.id})}" method="post">
+    <button class="btn btn-outline-danger mt-2" type="submit">Remove</button>
+  </form>
+</div>
+</body>
+</html>
