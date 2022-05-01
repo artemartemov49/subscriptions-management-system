@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="row mb-1">
-        <label for="activity" class="col-md-2 col-form-label">Activity name:</label>
+        <label for="activity" class="col-md-2 col-form-label">Subscription type:</label>
         <select class="form-select form-select-sm col-md-3 w-auto" name="priceId" id="activity">
           <option th:each="price : ${prices}"
                   th:value="${price.id}"
