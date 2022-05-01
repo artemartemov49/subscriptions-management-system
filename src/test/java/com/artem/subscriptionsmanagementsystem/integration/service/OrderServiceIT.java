@@ -24,7 +24,6 @@ public class OrderServiceIT extends IntegrationTestBase {
     public static final LocalDate END_TIME = LocalDate.of(2022, 5, 10);
 
     private final OrderService orderService;
-    private final SubscriptionService subscriptionService;
     private final OrderRepository orderRepository;
 
     @Test
@@ -43,40 +42,4 @@ public class OrderServiceIT extends IntegrationTestBase {
         assertEquals(START_TIME, subscription.getStartTime());
         assertEquals(END_TIME.plusMonths(months), subscription.getEndTime());
     }
-
-    @Test
-    void createToNewSubscription() {
-        var subscriptionDto = new SubscriptionCreateDto(USER_ID, PRICE_ID);
-        var subscriptionReadDto = subscriptionService.create(subscriptionDto);
-
-        var orderCreateDto = new OrderCreateDto(subscriptionReadDto.getId(), PRICE_ID);
-        var actualResult = orderService.create(orderCreateDto);
-
-        var subscription = orderRepository.findById(actualResult.getId())
-            .map(Order::getSubscription)
-            .orElseThrow();
-        var months = actualResult.getPrice().getDuration().getMonths();
-
-        assertEquals(orderCreateDto.getPriceId(), actualResult.getPrice().getId());
-        assertEquals(orderCreateDto.getSubscriptionId(), subscription.getId());
-        assertEquals(Status.ACTIVE, subscription.getStatus());
-        assertEquals(LocalDate.now(), subscription.getStartTime());
-        assertEquals(LocalDate.now().plusMonths(months), subscription.getEndTime());
-    }
-
-//    @Test
-//    void createWithNewSubscription() {
-//        var subscriptionDto = new SubscriptionWithOrderCreateDto(USER_ID,1, PRICE_ID);
-//        OrderReadDto actualResult = orderService.createWithNewSubscription(subscriptionDto);
-//
-//        var subscription = orderRepository.findById(actualResult.getId())
-//            .map(Order::getSubscription)
-//            .orElseThrow();
-//        var months = actualResult.getPrice().getDuration().getMonths();
-//
-//        assertEquals(subscriptionDto.getPriceId(), actualResult.getPrice().getId());
-//        assertEquals(Status.ACTIVE, subscription.getStatus());
-//        assertEquals(LocalDate.now(), subscription.getStartTime());
-//        assertEquals(LocalDate.now().plusMonths(months), subscription.getEndTime());
-//    }
 }
