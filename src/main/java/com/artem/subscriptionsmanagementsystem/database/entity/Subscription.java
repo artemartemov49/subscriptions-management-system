@@ -44,6 +44,7 @@ public class Subscription implements BaseEntity<Integer> {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "subscription")
     private List<Order> orders = new ArrayList<>();
 
